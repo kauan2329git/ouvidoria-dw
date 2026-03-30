@@ -1,58 +1,58 @@
 :root {
-    --primary: #008542; /* Verde */
-    --secondary: #F47920; /* Laranja */
-    --bg-light: #f8fafc;
-    --sidebar-width: 280px;
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary: #008542;
+    --primary-light: #e6f3ec;
+    --secondary: #F47920;
+    --secondary-light: #fff4ec;
+    --sidebar-dark: #074027;
+    --text-main: #1E293B;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: #334155; overflow-x: hidden; }
+body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: var(--text-main); }
 
 /* Sidebar Moderna */
-.sidebar { width: var(--sidebar-width); height: 100vh; position: fixed; background: #fff; border-right: 1px solid rgba(0,0,0,0.05); z-index: 1000; }
-.sidebar-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: 700; margin-left: 15px; }
+.sidebar { width: 300px; height: 100vh; position: fixed; background: var(--sidebar-dark); color: white; z-index: 1050; display: flex; flex-direction: column; transition: var(--transition); }
+.sidebar-brand { padding: 2.5rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
 
-.nav-link-custom {
-    display: flex; align-items: center; padding: 12px 18px; color: #64748b; 
-    text-decoration: none; border-radius: 12px; margin: 4px 15px; transition: var(--transition-smooth);
-}
-.nav-link-custom.active { background: rgba(0, 133, 66, 0.08); color: var(--primary); font-weight: 600; }
-.nav-link-custom:hover:not(.active) { background: #f1f5f9; transform: translateX(5px); }
-.nav-link-custom i { margin-right: 12px; font-size: 1.2rem; }
+.logo-wrapper { display: flex; align-items: center; gap: 12px; }
+.logo-school { width: 45px; height: 45px; border-radius: 8px; object-fit: contain; background: white; padding: 2px; }
+.divider-v { width: 1px; height: 35px; background: rgba(255,255,255,0.2); }
+.brand-text .main { display: block; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.5px; }
+.brand-text .sub { font-size: 0.65rem; color: var(--secondary); font-weight: 600; }
 
-/* Main Area */
-.main-content { margin-left: var(--sidebar-width); padding: 40px; }
+.nav-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.4); padding-left: 25px; margin-bottom: 15px; }
+.nav-link-custom { padding: 12px 25px; color: rgba(255,255,255,0.7); text-decoration: none; display: flex; align-items: center; gap: 15px; transition: var(--transition); border-left: 4px solid transparent; }
+.nav-link-custom i { width: 20px; font-size: 1.1rem; }
+.nav-link-custom:hover, .nav-link-custom.active { background: rgba(255,255,255,0.05); color: white; border-left-color: var(--secondary); }
+.login-highlight { margin-top: 20px; color: var(--secondary); font-weight: 600; }
 
-/* Stat Cards V2 */
-.stat-card-v2 {
-    background: #fff; padding: 25px; border-radius: 20px; display: flex; align-items: center;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: var(--transition-smooth); border-left: 6px solid transparent;
-}
-.stat-card-v2:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-.stat-card-v2.border-green { border-left-color: var(--primary); }
-.stat-card-v2.border-orange { border-left-color: var(--secondary); }
-.stat-card-v2.border-blue { border-left-color: #3b82f6; }
+.sidebar-footer { margin-top: auto; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; }
+.logo-gov { width: 80%; opacity: 0.8; filter: brightness(0) invert(1); }
 
-.icon-box { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-right: 20px; }
-.bg-green-light { background: rgba(0, 133, 66, 0.1); color: var(--primary); }
-.bg-orange-light { background: rgba(244, 121, 32, 0.1); color: var(--secondary); }
+/* Main Content */
+.content-wrapper { margin-left: 300px; padding: 3rem 5rem; }
 
-/* Buttons & Badges */
-.btn-orange-dw { background: var(--secondary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; }
-.badge-status { padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
-.badge-status.pending { background: #fef3c7; color: #92400e; }
-.badge-status.resolved { background: #dcfce7; color: #166534; }
+/* Action Cards */
+.action-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+.card-action { background: white; padding: 25px; border-radius: 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: var(--transition); border: 1px solid transparent; }
+.card-action:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); border-color: var(--primary-light); }
+
+.icon-circle { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+.bg-green-light { background: var(--primary-light); color: var(--primary); }
+.bg-orange-light { background: var(--secondary-light); color: var(--secondary); }
+
+/* Typography */
+.text-gradient { background: linear-gradient(45deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tag-new { background: var(--secondary-light); color: var(--secondary); padding: 6px 15px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
 /* Animações Sênior */
-.animate-fade-in { animation: fadeIn 0.6s ease-out; }
-.animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.animate-slide-up-delay { animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards; }
+.animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-slide-up-delay { animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s backwards; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Responsividade Mobile */
+/* Mobile */
 @media (max-width: 992px) {
-    .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
-    .main-content { margin-left: 0; padding: 20px; }
+    .sidebar { left: -300px; }
+    .sidebar.show { left: 0; }
+    .content-wrapper { margin-left: 0; padding: 4rem 1.5rem; }
 }
