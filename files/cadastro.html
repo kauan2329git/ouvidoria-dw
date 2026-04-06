@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta — Ouvidoria Digital | Dom Walfrido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+  <div class="auth-page">
+
+    <!-- ══ PAINEL ESQUERDO ══════════════════════════════════ -->
+    <div class="auth-panel-left">
+      <div class="panel-decoration">
+        <div class="deco-circle c1"></div>
+        <div class="deco-circle c2"></div>
+        <div class="deco-circle c3"></div>
+      </div>
+
+      <div class="panel-logo">
+        <img src="assets/img/logo.jpeg" alt="Logo EEEP Dom Walfrido">
+        <div class="panel-brand-name">
+          Ouvidoria Digital
+          <span>EEEP Dom Walfrido</span>
+        </div>
+      </div>
+
+      <div class="auth-panel-tagline">
+        <h2>Junte-se à <em>comunidade.</em></h2>
+        <p>Crie sua conta e tenha acesso ao histórico completo das suas manifestações. Rápido, seguro e gratuito.</p>
+        <div class="panel-badges">
+          <div class="panel-badge"><i class="bi bi-person-check-fill"></i> Cadastro em menos de 2 minutos</div>
+          <div class="panel-badge"><i class="bi bi-shield-fill-check"></i> Senha armazenada com hash seguro</div>
+          <div class="panel-badge"><i class="bi bi-eye-slash-fill"></i> Sigilo garantido pela LGPD</div>
+        </div>
+      </div>
+
+      <div></div>
+    </div>
+
+    <!-- ══ PAINEL DIREITO ═══════════════════════════════════ -->
+    <div class="auth-panel-right">
+      <div class="auth-form-wrap" style="max-width:480px;">
+
+        <h1 class="animate-fade-up" data-delay="1">Criar Conta</h1>
+        <p class="auth-subtitle animate-fade-up" data-delay="2">
+          Preencha os dados abaixo para se cadastrar no sistema.
+        </p>
+
+        <!-- ── PROGRESS STEPS ── -->
+        <div class="step-progress animate-fade-up" data-delay="2" id="stepProgress">
+          <div class="text-center" style="flex-shrink:0">
+            <div class="step-dot active" id="dot1">1</div>
+            <div class="step-label">Dados</div>
+          </div>
+          <div class="step-line" id="line1"></div>
+          <div class="text-center" style="flex-shrink:0">
+            <div class="step-dot" id="dot2">2</div>
+            <div class="step-label">Senha</div>
+          </div>
+          <div class="step-line" id="line2"></div>
+          <div class="text-center" style="flex-shrink:0">
+            <div class="step-dot" id="dot3">3</div>
+            <div class="step-label">Confirmar</div>
+          </div>
+        </div>
+
+        <form id="formCadastro" novalidate>
+
+          <!-- ── STEP 1: DADOS PESSOAIS ─────────────────── -->
+          <div class="form-step active" id="step1">
+
+            <div class="field-group" id="fgNome">
+              <label for="inputNome">Nome Completo</label>
+              <div class="input-wrap">
+                <i class="bi bi-person input-icon"></i>
+                <input type="text" id="inputNome" name="nome" placeholder="Seu nome completo" autocomplete="name">
+              </div>
+              <span class="field-error" id="errNome">Informe seu nome completo.</span>
+            </div>
+
+            <div class="field-group" id="fgEmail">
+              <label for="inputEmail">E-mail</label>
+              <div class="input-wrap">
+                <i class="bi bi-envelope input-icon"></i>
+                <input type="email" id="inputEmail" name="email" placeholder="seuemail@exemplo.com" autocomplete="email">
+              </div>
+              <span class="field-error" id="errEmail">Informe um e-mail válido.</span>
+            </div>
+
+            <div class="field-group" id="fgCpf">
+              <label for="inputCpf">CPF <span style="font-weight:400;color:var(--text-muted)">(opcional)</span></label>
+              <div class="input-wrap">
+                <i class="bi bi-card-text input-icon"></i>
+                <input type="text" id="inputCpf" name="cpf" placeholder="000.000.000-00" maxlength="14">
+              </div>
+              <span class="field-error" id="errCpf">CPF inválido.</span>
+            </div>
+
+            <div class="field-group" id="fgTipo">
+              <label for="inputTipo">Você é</label>
+              <div class="input-wrap">
+                <i class="bi bi-people input-icon"></i>
+                <select id="inputTipo" name="tipo">
+                  <option value="">Selecione...</option>
+                  <option value="aluno">Aluno(a)</option>
+                  <option value="professor">Professor(a)</option>
+                  <option value="servidor">Servidor(a)</option>
+                  <option value="responsavel">Responsável</option>
+                  <option value="comunidade">Comunidade</option>
+                </select>
+              </div>
+              <span class="field-error" id="errTipo">Selecione uma opção.</span>
+            </div>
+
+            <button type="button" class="btn-dw btn-dw-primary w-full" id="btnStep1">
+              Continuar <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+          </div>
+
+          <!-- ── STEP 2: SENHA ──────────────────────────── -->
+          <div class="form-step" id="step2">
+
+            <div class="field-group" id="fgSenha">
+              <label for="inputSenha">Criar Senha</label>
+              <div class="input-wrap">
+                <i class="bi bi-lock input-icon"></i>
+                <input type="password" id="inputSenha" name="senha" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+                <i class="bi bi-eye toggle-pass" id="toggleSenha1"></i>
+              </div>
+              <div class="pass-strength" id="passStrength">
+                <div class="strength-bar" id="sb1"></div>
+                <div class="strength-bar" id="sb2"></div>
+                <div class="strength-bar" id="sb3"></div>
+                <div class="strength-bar" id="sb4"></div>
+                <span class="strength-label" id="sbLabel">Digite sua senha</span>
+              </div>
+              <span class="field-error" id="errSenha">Senha deve ter no mínimo 8 caracteres.</span>
+            </div>
+
+            <div class="field-group" id="fgConfirma">
+              <label for="inputConfirma">Confirmar Senha</label>
+              <div class="input-wrap">
+                <i class="bi bi-lock-fill input-icon"></i>
+                <input type="password" id="inputConfirma" name="confirma" placeholder="Repita a senha" autocomplete="new-password">
+                <i class="bi bi-eye toggle-pass" id="toggleSenha2"></i>
+              </div>
+              <span class="field-error" id="errConfirma">As senhas não coincidem.</span>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:.5rem">
+              <button type="button" class="btn-dw btn-dw-ghost" id="btnBackStep1" style="flex:1">
+                <i class="bi bi-arrow-left me-2"></i>Voltar
+              </button>
+              <button type="button" class="btn-dw btn-dw-primary" id="btnStep2" style="flex:2">
+                Continuar <i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 3: REVISAR E CONFIRMAR ───────────── -->
+          <div class="form-step" id="step3">
+
+            <div class="review-card" style="background:var(--bg);border-radius:var(--radius);padding:1.2rem;margin-bottom:1.4rem;border:1.5px solid var(--border)">
+              <p style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.8rem">Revisão dos dados</p>
+              <div id="reviewContent" style="display:flex;flex-direction:column;gap:8px;font-size:.88rem"></div>
+            </div>
+
+            <div class="field-group" style="margin-bottom:1rem">
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;background:var(--green-soft);border-radius:var(--radius);border:1.5px solid var(--green)">
+                <input type="checkbox" id="checkTermos" style="margin-top:3px;flex-shrink:0;accent-color:var(--green);width:16px;height:16px;cursor:pointer">
+                <label for="checkTermos" style="font-size:.82rem;color:var(--text);cursor:pointer;line-height:1.5">
+                  Concordo com os <a href="#" style="color:var(--green);font-weight:600">Termos de Uso</a> e autorizo o tratamento dos meus dados conforme a <strong>LGPD</strong>.
+                </label>
+              </div>
+              <span class="field-error" id="errTermos">Você precisa aceitar os termos.</span>
+            </div>
+
+            <div style="display:flex;gap:10px">
+              <button type="button" class="btn-dw btn-dw-ghost" id="btnBackStep2" style="flex:1">
+                <i class="bi bi-arrow-left me-2"></i>Voltar
+              </button>
+              <button type="submit" class="btn-dw btn-dw-primary" id="btnCadastrar" style="flex:2">
+                <span class="btn-text"><i class="bi bi-person-check me-2"></i>Criar Conta</span>
+                <span class="btn-spinner"></span>
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="auth-link-row animate-fade-up" data-delay="5">
+          Já tem conta? <a href="login.html">Fazer login</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="dw-toast-container" id="toastContainer"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="script2.js"></script>
+  <script>DW.cadastroPage();</script>
+</body>
+</html>

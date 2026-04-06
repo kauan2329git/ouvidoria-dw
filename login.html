@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ouvidoria EEEP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <div class="logo-icon">
+                <i class="bi bi-megaphone-fill"></i>
+            </div>
+            <h4 class="fw-bold" style="color: var(--text-dark);">Ouvidoria Digital</h4>
+            <p class="text-muted small">EEEP Dom Walfrido Teixeira Vieira</p>
+        </div>
+
+        <form id="formLogin" onsubmit="fazerLogin(event)">
+            <div class="mb-3">
+                <label class="form-label fw-medium text-secondary">CPF ou E-mail</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="bi bi-person"></i></span>
+                    <input type="text" id="user" class="form-control border-start-0 ps-0" placeholder="Digite seu acesso" required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex justify-content-between">
+                    <label class="form-label fw-medium text-secondary">Senha</label>
+                    <a href="#" class="small link-orange">Esqueceu a senha?</a>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+                    <input type="password" id="pass" class="form-control border-start-0 ps-0" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary-custom w-100 mb-3">
+                Acessar Sistema <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+
+            <div class="text-center mt-4">
+                <p class="text-muted small mb-0">Novo por aqui? 
+                    <a href="#" class="fw-bold link-orange">Crie sua conta</a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    
+
+</body>
+</html>

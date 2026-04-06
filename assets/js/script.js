@@ -34,3 +34,22 @@ $(document).ready(function() {
         }, 1500);
     });
 });
+
+function fazerLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+
+            if (user && pass) {
+                Swal.fire({
+                    title: 'Autenticando...',
+                    text: 'Aguarde enquanto validamos seus dados.',
+                    allowOutsideClick: false,
+                    didOpen: () => { Swal.showLoading(); }
+                });
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            }
+        }
