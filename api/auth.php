@@ -258,6 +258,71 @@ function handleManifestacao(): void {
 }
 
 /* ══════════════════════════════════════════════════════════
+   AÇÃO: CONSULTAR PROTOCOLO (público — anônimo ou logado)
+   ══════════════════════════════════════════════════════════ */
+function handleConsultarProtocolo(): void {
+    $protocolo = post('protocolo');
+    if (empty($protocolo)) {
+        resposta(['sucesso' => false, 'mensagem' => 'Protocolo não informado.']);
+    }
+
+    try {
+        $pdo  = conectar();
+        $stmt = $pdo->prepare('
+            SELECT protocolo, categoria, urgencia, sigilo, assunto, descricao,
+                   status, resposta, criado_em, resolvido_em
+            FROM manifestacoes
+            WHERE protocolo = ?
+            LIMIT 1
+        ');
+        $stmt->execute([$protocolo]);
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            resposta(['sucesso' => false, 'mensagem' => 'Protocolo não encontrado. Verifique o número e tente novamente.']);
+        }
+
+        // Para manifestações sigilosas, omite a descrição completa na consulta pública
+        if ($row['sigilo'] === 'sim') {
+            $row['descricao'] = '[Manifestação sigilosa — conteúdo restrito]';
+        }
+
+        resposta(['sucesso' => true, 'manifestacao' => $row]);
+
+    } catch (PDOException $e) {
+        resposta(['sucesso' => false, 'mensagem' => 'Erro ao consultar. Tente novamente.']);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   AÇÃO: MINHAS MANIFESTAÇÕES (requer user_id)
+   ══════════════════════════════════════════════════════════ */
+function handleMinhasManifestacoes(): void {
+    $userId = (int) ($_POST['user_id'] ?? 0);
+    if (!$userId) {
+        resposta(['sucesso' => false, 'mensagem' => 'Não autenticado.']);
+    }
+
+    try {
+        $pdo  = conectar();
+        $stmt = $pdo->prepare('
+            SELECT protocolo, categoria, urgencia, sigilo, assunto, descricao,
+                   status, resposta, criado_em, resolvido_em
+            FROM manifestacoes
+            WHERE user_id = ?
+            ORDER BY criado_em DESC
+        ');
+        $stmt->execute([$userId]);
+        $rows = $stmt->fetchAll();
+
+        resposta(['sucesso' => true, 'manifestacoes' => $rows]);
+
+    } catch (PDOException $e) {
+        resposta(['sucesso' => false, 'mensagem' => 'Erro ao buscar manifestações.']);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
    ROTEADOR
    ══════════════════════════════════════════════════════════ */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -267,9 +332,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $action = post('action');
 
 match ($action) {
-    'login'         => handleLogin(),
-    'cadastrar'     => handleCadastro(),
-    'stats'         => handleStats(),
-    'manifestacao'  => handleManifestacao(),
-    default         => resposta(['erro' => 'Ação desconhecida.'])
+    'login'                   => handleLogin(),
+    'cadastrar'               => handleCadastro(),
+    'stats'                   => handleStats(),
+    'manifestacao'            => handleManifestacao(),
+    'consultar_protocolo'     => handleConsultarProtocolo(),
+    'minhas_manifestacoes'    => handleMinhasManifestacoes(),
+    default                   => resposta(['erro' => 'Ação desconhecida.'])
 };

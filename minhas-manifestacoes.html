@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Manifestações — Ouvidoria Digital EEEP Dom Walfrido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body { background: var(--bg); }
+
+    /* ── Navbar ────────────────────────────────────── */
+    .top-bar {
+      background: var(--green-deeper);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.18);
+    }
+    .top-bar-logo { display:flex;align-items:center;gap:10px;text-decoration:none; }
+    .top-bar-logo img { width:36px;height:36px;border-radius:50%;object-fit:cover; }
+    .top-bar-logo span { color:#fff;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700; }
+    .top-bar-links { display:flex;gap:8px;align-items:center; }
+    .top-bar-links a {
+      color:rgba(255,255,255,.75);font-size:.82rem;padding:6px 14px;
+      border-radius:8px;transition:var(--transition);text-decoration:none;
+    }
+    .top-bar-links a:hover { background:rgba(255,255,255,.1);color:#fff; }
+    .top-bar-links .danger { color:#fca5a5; }
+    .top-bar-links .danger:hover { background:rgba(239,68,68,.15);color:#fca5a5; }
+
+    /* ── Header do painel ───────────────────────────── */
+    .painel-header {
+      background: linear-gradient(135deg, var(--green-deeper) 0%, var(--green-dark) 100%);
+      padding: 2.5rem 1rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .painel-header::before {
+      content:'';position:absolute;inset:0;
+      background: radial-gradient(circle at 15% 50%, rgba(244,121,32,.2) 0%, transparent 55%),
+                  radial-gradient(circle at 85% 30%, rgba(0,133,66,.3) 0%, transparent 50%);
+    }
+    .painel-header * { position:relative;z-index:1; }
+    .painel-header h1 { font-family:'Syne',sans-serif;color:#fff;font-size:clamp(1.4rem,3.5vw,2rem);font-weight:800;margin-bottom:.3rem; }
+    .painel-header p  { color:rgba(255,255,255,.7);font-size:.88rem; }
+
+    /* ── Stats row ──────────────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 560px;
+      margin: -2rem auto 0;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border-top: 3px solid var(--border);
+    }
+    .stat-card.sc-total   { border-top-color: var(--green); }
+    .stat-card.sc-pend    { border-top-color: var(--orange); }
+    .stat-card.sc-res     { border-top-color: #22c55e; }
+    .stat-card .sn { font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1; }
+    .stat-card .sl { font-size:.72rem;color:var(--text-muted);margin-top:.2rem; }
+
+    /* ── Conteúdo principal ─────────────────────────── */
+    .main-content {
+      max-width: 760px;
+      margin: 2rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    /* ── Filtros ─────────────────────────────────────── */
+    .filtros-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+      align-items: center;
+    }
+    .filtro-btn {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-size: .78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-muted);
+    }
+    .filtro-btn:hover  { border-color: var(--green);color:var(--green); }
+    .filtro-btn.active { background:var(--green);color:#fff;border-color:var(--green); }
+
+    /* ── Card de manifestação ───────────────────────── */
+    .mf-card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .mf-card:hover { box-shadow: var(--shadow);border-color:#c8d6e0; }
+
+    .mf-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.1rem;
+      cursor: pointer;
+      gap: .8rem;
+    }
+    .mf-card-head-left { flex:1;min-width:0; }
+    .mf-card-prot {
+      font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;
+      color:var(--text);
+    }
+    .mf-card-ass {
+      font-size:.82rem;color:var(--text-muted);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      margin-top:1px;
+    }
+    .mf-card-meta {
+      display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;
+    }
+    .mf-card-chevron {
+      color:var(--text-muted);transition:transform .3s ease;flex-shrink:0;
+    }
+    .mf-card.open .mf-card-chevron { transform:rotate(180deg); }
+
+    .mf-card-body {
+      border-top: 1.5px solid var(--border);
+      padding: 1rem 1.1rem;
+      display: none;
+    }
+    .mf-card.open .mf-card-body { display:block; }
+
+    .mf-row { display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);gap:1rem; }
+    .mf-row:last-child { border-bottom:none; }
+    .mf-label { font-size:.76rem;color:var(--text-muted);font-weight:500;white-space:nowrap; }
+    .mf-value { font-size:.83rem;color:var(--text);font-weight:500;text-align:right;word-break:break-word;max-width:60%; }
+
+    .mf-desc-box {
+      background:var(--bg);border-radius:10px;padding:.8rem 1rem;margin-top:.6rem;
+      font-size:.83rem;color:var(--text);line-height:1.65;
+    }
+    .mf-desc-label { font-size:.71rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem; }
+
+    .resp-box {
+      background:var(--green-soft);border:1.5px solid rgba(0,133,66,.2);
+      border-radius:10px;padding:.8rem 1rem;margin-top:.6rem;
+    }
+    .resp-box .resp-label { font-size:.71rem;font-weight:600;color:var(--green-dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem; }
+    .resp-box p { font-size:.83rem;color:var(--text);margin:0;line-height:1.65; }
+
+    .btn-prot-share {
+      display:inline-flex;align-items:center;gap:6px;
+      padding:5px 12px;border-radius:8px;border:1.5px solid var(--border);
+      background:#fff;font-size:.75rem;font-weight:500;cursor:pointer;
+      color:var(--text-muted);transition:var(--transition);margin-top:.8rem;
+    }
+    .btn-prot-share:hover { border-color:var(--green);color:var(--green); }
+
+    /* Badges status */
+    .status-badge { display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:16px;font-size:.74rem;font-weight:600; }
+    .sb-pendente   { background:#fff3e0;color:#e65100; }
+    .sb-em_analise { background:#e3f2fd;color:#1565c0; }
+    .sb-resolvido  { background:#e8f5e9;color:var(--green-dark); }
+    .sb-arquivado  { background:#f5f5f5;color:#616161; }
+
+    /* Cat badges */
+    .cat-badge {
+      display:inline-flex;align-items:center;gap:4px;
+      padding:3px 9px;border-radius:12px;font-size:.72rem;font-weight:600;
+      background:var(--orange-soft);color:var(--orange-dark);
+    }
+
+    /* ── Empty state ─────────────────────────────────── */
+    .empty-state { text-align:center;padding:3rem 1rem; }
+    .empty-state i { font-size:3rem;color:var(--border);display:block;margin-bottom:1rem; }
+    .empty-state h5 { font-weight:600;margin-bottom:.4rem; }
+    .empty-state p  { color:var(--text-muted);font-size:.87rem; }
+
+    /* ── Toast ─────────────────────────────────────── */
+    .toast-wrap { position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px; }
+    .dw-t { display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;font-size:.84rem;font-weight:500;
+            box-shadow:0 4px 20px rgba(0,0,0,.15);animation:slideIn .3s ease;min-width:220px;max-width:340px; }
+    .t-success { background:var(--green);color:#fff; }
+    .t-error   { background:#ef4444;color:#fff; }
+    .t-warning { background:var(--orange);color:#fff; }
+    .ti { font-size:1rem;flex-shrink:0; }
+    .tc { margin-left:auto;cursor:pointer;opacity:.8; }
+    .tc:hover { opacity:1; }
+    @keyframes slideIn { from { opacity:0;transform:translateY(12px); } to { opacity:1;transform:translateY(0); } }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    @media (max-width:500px) {
+      .stats-row { grid-template-columns:1fr 1fr 1fr; }
+      .top-bar { padding:0 1rem; }
+      .top-bar-links a:not(.danger):not(:last-child) { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="top-bar">
+    <a href="manifestacao.html" class="top-bar-logo">
+      <img src="assets/img/logo2 (2).jpeg" alt="Logo">
+      <span>Ouvidoria Digital</span>
+    </a>
+    <div class="top-bar-links">
+      <a href="manifestacao.html">Início</a>
+      <a href="consulta.html"><i class="bi bi-search me-1"></i>Consultar</a>
+      <a href="#" id="btnSair" class="danger"><i class="bi bi-box-arrow-right me-1"></i>Sair</a>
+    </div>
+  </nav>
+
+  <!-- Painel header -->
+  <div class="painel-header">
+    <h1><i class="bi bi-collection me-2"></i>Minhas Manifestações</h1>
+    <p id="userGreeting">Carregando...</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card sc-total">
+      <div class="sn" id="statTotal">—</div>
+      <div class="sl">Total</div>
+    </div>
+    <div class="stat-card sc-pend">
+      <div class="sn" id="statPend">—</div>
+      <div class="sl">Em aberto</div>
+    </div>
+    <div class="stat-card sc-res">
+      <div class="sn" id="statRes">—</div>
+      <div class="sl">Resolvidas</div>
+    </div>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="main-content">
+
+    <!-- Ações rápidas -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+      <div class="filtros-bar" style="margin-bottom:0">
+        <button class="filtro-btn active" data-filtro="todos">Todos</button>
+        <button class="filtro-btn" data-filtro="pendente">Pendentes</button>
+        <button class="filtro-btn" data-filtro="em_analise">Em análise</button>
+        <button class="filtro-btn" data-filtro="resolvido">Resolvidos</button>
+      </div>
+      <a href="manifestacao.html#registrar" class="btn-dw btn-dw-orange" style="font-size:.82rem;padding:7px 16px">
+        <i class="bi bi-plus-circle me-1"></i>Nova
+      </a>
+    </div>
+
+    <!-- Lista -->
+    <div id="listaMf">
+      <div class="empty-state">
+        <i class="bi bi-arrow-clockwise" style="animation:spin .8s linear infinite"></i>
+        <p>Carregando manifestações...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    /* ── Helpers ── */
+    function toast(msg, type, ms) {
+      ms = ms || 3500;
+      var icons = { success:'bi-check-circle-fill', error:'bi-x-circle-fill', warning:'bi-exclamation-triangle-fill' };
+      var $t = $('<div class="dw-t t-'+type+'"><i class="bi '+icons[type]+' ti"></i><span>'+msg+'</span><i class="bi bi-x tc"></i></div>');
+      $('#toastWrap').append($t);
+      $t.find('.tc').on('click',function(){ $t.remove(); });
+      setTimeout(function(){ $t.fadeOut(300,function(){ $t.remove(); }); }, ms);
+    }
+
+    var statusLabels = {
+      pendente:   ['Pendente',   'sb-pendente',   'bi-hourglass-split'],
+      em_analise: ['Em Análise', 'sb-em_analise', 'bi-search'],
+      resolvido:  ['Resolvido',  'sb-resolvido',  'bi-check-circle-fill'],
+      arquivado:  ['Arquivado',  'sb-arquivado',  'bi-archive']
+    };
+    var catLabels = {
+      infraestrutura:'Infraestrutura', ensino:'Ensino', convivencia:'Convivência',
+      elogio:'Elogio', sugestao:'Sugestão', denuncia:'Denúncia', outros:'Outros'
+    };
+    var catIcons = {
+      infraestrutura:'bi-building', ensino:'bi-book-half', convivencia:'bi-people',
+      elogio:'bi-star', sugestao:'bi-lightbulb', denuncia:'bi-exclamation-triangle', outros:'bi-three-dots'
+    };
+    var urgLabels = { normal:'Normal', alta:'Alta', urgente:'Urgente' };
+    var urgColors = { normal:'var(--text-muted)', alta:'var(--orange)', urgente:'#dc2626' };
+
+    function formatDate(d) {
+      if (!d) return '—';
+      var dt = new Date(d.replace(' ','T'));
+      return dt.toLocaleDateString('pt-BR') + ' às ' + dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    }
+    function esc(s) { return $('<span>').text(s||'').html(); }
+
+    /* ── Guarda manifests e filtro atual ── */
+    var todasMf = [];
+    var filtroAtual = 'todos';
+
+    /* ── Verifica login ── */
+    var usuario = null;
+    try { usuario = JSON.parse(sessionStorage.getItem('dw_user')); } catch(e){}
+    if (!usuario || !usuario.id) {
+      // Não está logado — redireciona
+      window.location.href = 'login.html';
+    }
+
+    /* ── Exibe saudação ── */
+    var primeiroNome = (usuario.nome || '').split(' ')[0];
+    $('#userGreeting').text('Olá, ' + primeiroNome + '! Aqui estão todas as suas manifestações.');
+
+    /* ── Sair ── */
+    $('#btnSair').on('click', function(e){
+      e.preventDefault();
+      sessionStorage.removeItem('dw_user');
+      window.location.href = 'manifestacao.html';
+    });
+
+    /* ── Filtros ── */
+    $(document).on('click', '.filtro-btn', function(){
+      $('.filtro-btn').removeClass('active');
+      $(this).addClass('active');
+      filtroAtual = $(this).data('filtro');
+      renderLista();
+    });
+
+    /* ── Carregar manifestações ── */
+    function carregarMf() {
+      $.ajax({
+        url: 'api/auth.php', method: 'POST',
+        data: { action: 'minhas_manifestacoes', user_id: usuario.id },
+        dataType: 'json',
+        success: function(res) {
+          if (!res || !res.sucesso) {
+            mostrarErro();
+            return;
+          }
+          todasMf = res.manifestacoes || [];
+
+          // Stats
+          var total = todasMf.length;
+          var pend  = todasMf.filter(function(m){ return m.status === 'pendente' || m.status === 'em_analise'; }).length;
+          var res2  = todasMf.filter(function(m){ return m.status === 'resolvido'; }).length;
+          $('#statTotal').text(total);
+          $('#statPend').text(pend);
+          $('#statRes').text(res2);
+
+          renderLista();
+        },
+        error: function() { mostrarErro(); }
+      });
+    }
+
+    function mostrarErro() {
+      $('#listaMf').html(
+        '<div class="empty-state">' +
+          '<i class="bi bi-wifi-off" style="color:var(--orange)"></i>' +
+          '<h5>Erro de conexão</h5>' +
+          '<p>Não foi possível carregar suas manifestações. <a href="#" onclick="carregarMf();return false;">Tentar novamente</a></p>' +
+        '</div>'
+      );
+    }
+
+    function renderLista() {
+      var lista = filtroAtual === 'todos'
+        ? todasMf
+        : todasMf.filter(function(m){ return m.status === filtroAtual; });
+
+      if (!lista.length) {
+        var msgs = {
+          todos: ['bi-inbox','Nenhuma manifestação ainda','Você ainda não registrou nenhuma manifestação.'],
+          pendente: ['bi-hourglass','Nenhuma pendente','Não há manifestações pendentes.'],
+          em_analise: ['bi-search','Nenhuma em análise','Não há manifestações em análise.'],
+          resolvido: ['bi-check-circle','Nenhuma resolvida','Nenhuma manifestação foi resolvida ainda.']
+        };
+        var m = msgs[filtroAtual] || msgs['todos'];
+        $('#listaMf').html(
+          '<div class="empty-state">' +
+            '<i class="bi '+ m[0] +'"></i>' +
+            '<h5>'+ m[1] +'</h5>' +
+            '<p>'+ m[2] +'</p>' +
+            (filtroAtual === 'todos' ? '<a href="manifestacao.html#registrar" class="btn-dw btn-dw-orange" style="margin-top:1rem;display:inline-flex">Nova Manifestação</a>' : '') +
+          '</div>'
+        );
+        return;
+      }
+
+      var html = '';
+      lista.forEach(function(m, idx) {
+        var st   = statusLabels[m.status] || ['Desconhecido','sb-pendente','bi-question-circle'];
+        var cat  = catLabels[m.categoria]  || m.categoria;
+        var catI = catIcons[m.categoria]   || 'bi-tag';
+        var urg  = urgLabels[m.urgencia]   || m.urgencia;
+        var urgC = urgColors[m.urgencia]   || 'var(--text-muted)';
+
+        html +=
+          '<div class="mf-card" id="mfc-'+idx+'">' +
+            '<div class="mf-card-head" onclick="toggleCard('+idx+')">' +
+              '<div class="mf-card-head-left">' +
+                '<div class="mf-card-prot">'+ esc(m.protocolo) +'</div>' +
+                '<div class="mf-card-ass">'+ esc(m.assunto) +'</div>' +
+              '</div>' +
+              '<div class="mf-card-meta">' +
+                '<span class="cat-badge"><i class="bi '+catI+'"></i>'+ esc(cat) +'</span>' +
+                '<span class="status-badge '+st[1]+'"><i class="bi '+st[2]+'"></i>'+ st[0] +'</span>' +
+                (m.status === 'resolvido' ? '<i class="bi bi-check2-circle" style="color:var(--green);font-size:1.1rem" title="Resolvido"></i>' : '') +
+              '</div>' +
+              '<i class="bi bi-chevron-down mf-card-chevron"></i>' +
+            '</div>' +
+            '<div class="mf-card-body">' +
+              '<div class="mf-row"><span class="mf-label"><i class="bi bi-calendar3 me-1"></i>Registrado em</span><span class="mf-value">'+ formatDate(m.criado_em) +'</span></div>' +
+              '<div class="mf-row"><span class="mf-label"><i class="bi bi-flag me-1"></i>Urgência</span><span class="mf-value" style="color:'+urgC+';font-weight:600">'+ esc(urg) +'</span></div>' +
+              '<div class="mf-row"><span class="mf-label"><i class="bi bi-eye me-1"></i>Sigilo</span><span class="mf-value">'+ (m.sigilo === 'sim' ? '🔒 Sigiloso' : 'Não sigiloso') +'</span></div>' +
+              (m.resolvido_em ? '<div class="mf-row"><span class="mf-label"><i class="bi bi-check-circle me-1"></i>Resolvido em</span><span class="mf-value" style="color:var(--green)">'+ formatDate(m.resolvido_em) +'</span></div>' : '') +
+              '<div class="mf-desc-box">' +
+                '<div class="mf-desc-label">Descrição</div>' +
+                esc(m.descricao).replace(/\n/g,'<br>') +
+              '</div>' +
+              (m.resposta
+                ? '<div class="resp-box"><div class="resp-label"><i class="bi bi-reply-fill me-1"></i>Resposta da Ouvidoria</div><p>'+ esc(m.resposta).replace(/\n/g,'<br>') +'</p></div>'
+                : '<div style="margin-top:.6rem;padding:.7rem 1rem;background:#fffbf5;border-radius:10px;border:1.5px dashed rgba(244,121,32,.25);font-size:.8rem;color:var(--text-muted);text-align:center">' +
+                    '<i class="bi bi-hourglass-split me-1" style="color:var(--orange)"></i>Aguardando resposta da equipe' +
+                  '</div>'
+              ) +
+              '<button class="btn-prot-share" onclick="compartilhar(\''+ esc(m.protocolo) +'\')"><i class="bi bi-share"></i>Compartilhar protocolo</button>' +
+            '</div>' +
+          '</div>';
+      });
+
+      $('#listaMf').html(html);
+    }
+
+    function toggleCard(idx) {
+      var $c = $('#mfc-' + idx);
+      $c.toggleClass('open');
+    }
+
+    function compartilhar(prot) {
+      var url = window.location.origin + window.location.pathname.replace('minhas-manifestacoes.html','') + 'consulta.html?p=' + encodeURIComponent(prot);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function(){
+          toast('Link copiado! Cole para compartilhar a consulta.', 'success');
+        });
+      } else {
+        toast('Link: ' + url, 'warning', 6000);
+      }
+    }
+
+    carregarMf();
+  </script>
+</body>
+</html>

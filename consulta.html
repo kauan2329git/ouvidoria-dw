@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultar Protocolo — Ouvidoria Digital EEEP Dom Walfrido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body { background: var(--bg); }
+
+    /* ── Navbar ──────────────────────────────────────── */
+    .top-bar {
+      background: var(--green-deeper);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.18);
+    }
+    .top-bar-logo { display:flex;align-items:center;gap:10px;text-decoration:none; }
+    .top-bar-logo img { width:36px;height:36px;border-radius:50%;object-fit:cover; }
+    .top-bar-logo span { color:#fff;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700; }
+    .top-bar-links { display:flex;gap:8px;align-items:center; }
+    .top-bar-links a {
+      color:rgba(255,255,255,.75);font-size:.82rem;padding:6px 14px;border-radius:8px;
+      transition:var(--transition);text-decoration:none;
+    }
+    .top-bar-links a:hover { background:rgba(255,255,255,.1);color:#fff; }
+    .top-bar-links .hl {
+      background:var(--orange);color:#fff;font-weight:600;
+    }
+    .top-bar-links .hl:hover { background:var(--orange-dark); }
+
+    /* ── Hero compacto ─────────────────────────────── */
+    .consulta-hero {
+      background: linear-gradient(135deg, var(--green-deeper) 0%, var(--green-dark) 100%);
+      padding: 3.5rem 1rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .consulta-hero::before {
+      content:'';
+      position:absolute;inset:0;
+      background: radial-gradient(circle at 20% 50%, rgba(244,121,32,.2) 0%, transparent 55%),
+                  radial-gradient(circle at 80% 30%, rgba(0,133,66,.3) 0%, transparent 50%);
+    }
+    .consulta-hero * { position:relative;z-index:1; }
+    .consulta-hero h1 { font-family:'Syne',sans-serif;color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.4rem; }
+    .consulta-hero p  { color:rgba(255,255,255,.75);font-size:.92rem;margin-bottom:0; }
+
+    /* ── Card de busca ──────────────────────────────── */
+    .search-card {
+      background:#fff;
+      border-radius:var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 2rem;
+      max-width: 560px;
+      margin: -2rem auto 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .search-card h5 { font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:1rem;color:var(--text); }
+    .prot-input-wrap {
+      display:flex;gap:8px;
+    }
+    .prot-input-wrap input {
+      flex:1;
+      border:1.5px solid var(--border);
+      border-radius:10px;
+      padding:10px 14px;
+      font-size:.9rem;
+      font-family:'Poppins',sans-serif;
+      outline:none;
+      transition:var(--transition);
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .prot-input-wrap input:focus { border-color:var(--green);box-shadow:0 0 0 3px var(--green-soft); }
+    .prot-input-wrap input::placeholder { text-transform:none;letter-spacing:0; }
+
+    /* ── Resultado ──────────────────────────────────── */
+    #resultado { margin-top:1.5rem;display:none; }
+
+    .status-badge {
+      display:inline-flex;align-items:center;gap:6px;
+      padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:600;
+    }
+    .sb-pendente   { background:#fff3e0;color:#e65100; }
+    .sb-em_analise { background:#e3f2fd;color:#1565c0; }
+    .sb-resolvido  { background:#e8f5e9;color:var(--green-dark); }
+    .sb-arquivado  { background:#f5f5f5;color:#616161; }
+
+    .mf-detail-row {
+      display:flex;justify-content:space-between;align-items:flex-start;
+      padding:10px 0;border-bottom:1px solid var(--border);
+      gap:1rem;
+    }
+    .mf-detail-row:last-child { border-bottom:none; }
+    .mf-detail-label { font-size:.78rem;color:var(--text-muted);font-weight:500;white-space:nowrap; }
+    .mf-detail-value { font-size:.85rem;color:var(--text);font-weight:500;text-align:right;word-break:break-word; }
+
+    .resposta-box {
+      background:var(--green-soft);
+      border:1.5px solid rgba(0,133,66,.2);
+      border-radius:12px;
+      padding:1rem 1.2rem;
+      margin-top:.5rem;
+    }
+    .resposta-box .resp-label {
+      font-size:.73rem;font-weight:600;color:var(--green-dark);
+      text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;
+    }
+    .resposta-box p { font-size:.85rem;color:var(--text);margin:0;line-height:1.6; }
+
+    .no-resp-box {
+      background:#fffbf5;border:1.5px dashed var(--orange-soft);
+      border-radius:12px;padding:1rem;text-align:center;
+      color:var(--text-muted);font-size:.83rem;
+    }
+
+    /* ── Info cards embaixo ─────────────────────────── */
+    .info-row { max-width:560px;margin:0 auto 3rem;display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+    .info-card { background:#fff;border-radius:var(--radius);padding:1rem;border:1.5px solid var(--border);display:flex;gap:10px;align-items:flex-start; }
+    .info-card i { font-size:1.2rem;flex-shrink:0;margin-top:2px; }
+    .info-card strong { display:block;font-size:.82rem; }
+    .info-card span   { font-size:.76rem;color:var(--text-muted); }
+
+    /* ── Spinner ─────────────────────────────────────── */
+    .spin { display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .toast-wrap { position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px; }
+    .dw-t { display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;font-size:.84rem;font-weight:500;
+            box-shadow:0 4px 20px rgba(0,0,0,.15);animation:slideIn .3s ease;min-width:220px;max-width:340px; }
+    .t-success { background:var(--green);color:#fff; }
+    .t-error   { background:#ef4444;color:#fff; }
+    .t-warning { background:var(--orange);color:#fff; }
+    .ti { font-size:1rem;flex-shrink:0; }
+    .tc { margin-left:auto;cursor:pointer;opacity:.8; }
+    .tc:hover { opacity:1; }
+    @keyframes slideIn { from { opacity:0;transform:translateY(12px); } to { opacity:1;transform:translateY(0); } }
+
+    @media (max-width:480px) {
+      .info-row { grid-template-columns:1fr; }
+      .prot-input-wrap { flex-direction:column; }
+      .prot-input-wrap button { width:100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="top-bar">
+    <a href="manifestacao.html" class="top-bar-logo">
+      <img src="assets/img/logo2 (2).jpeg" alt="Logo">
+      <span>Ouvidoria Digital</span>
+    </a>
+    <div class="top-bar-links">
+      <a href="manifestacao.html">Início</a>
+      <a href="manifestacao.html#registrar">Nova Manifestação</a>
+      <a href="login.html" class="hl" id="navLoginBtn"><i class="bi bi-person-circle me-1"></i>Minha Conta</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="consulta-hero">
+    <h1><i class="bi bi-search me-2"></i>Consultar Protocolo</h1>
+    <p>Digite o número do protocolo recebido ao enviar sua manifestação.</p>
+  </div>
+
+  <!-- Busca -->
+  <div class="container">
+    <div class="search-card">
+      <h5><i class="bi bi-hash me-1" style="color:var(--orange)"></i>Número do Protocolo</h5>
+      <div class="prot-input-wrap">
+        <input type="text" id="inpProtocolo" placeholder="Ex: #DW-2026-1234" maxlength="18">
+        <button class="btn-dw btn-dw-primary" id="btnBuscar" style="white-space:nowrap;min-width:110px">
+          <span class="btn-text"><i class="bi bi-search me-1"></i>Buscar</span>
+          <span class="btn-spinner"></span>
+        </button>
+      </div>
+      <p style="font-size:.74rem;color:var(--text-muted);margin-top:.5rem;margin-bottom:0">
+        <i class="bi bi-info-circle me-1"></i>O protocolo foi enviado na tela de confirmação após registrar sua manifestação.
+      </p>
+
+      <!-- Resultado -->
+      <div id="resultado">
+        <hr style="margin:1.2rem 0">
+
+        <!-- Cabeçalho do resultado -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem" id="resProt"></div>
+            <div style="font-size:.75rem;color:var(--text-muted)" id="resCriado"></div>
+          </div>
+          <span class="status-badge" id="resStatus"></span>
+        </div>
+
+        <!-- Detalhes -->
+        <div style="background:var(--bg);border-radius:12px;padding:.8rem 1rem;margin-bottom:.8rem">
+          <div class="mf-detail-row">
+            <span class="mf-detail-label"><i class="bi bi-tag me-1"></i>Categoria</span>
+            <span class="mf-detail-value" id="resCat"></span>
+          </div>
+          <div class="mf-detail-row">
+            <span class="mf-detail-label"><i class="bi bi-flag me-1"></i>Urgência</span>
+            <span class="mf-detail-value" id="resUrg"></span>
+          </div>
+          <div class="mf-detail-row">
+            <span class="mf-detail-label"><i class="bi bi-chat-text me-1"></i>Assunto</span>
+            <span class="mf-detail-value" id="resAss"></span>
+          </div>
+          <div class="mf-detail-row" id="resResolvidoRow" style="display:none">
+            <span class="mf-detail-label"><i class="bi bi-check-circle me-1"></i>Resolvido em</span>
+            <span class="mf-detail-value" id="resResolvido"></span>
+          </div>
+        </div>
+
+        <!-- Resposta da ouvidoria -->
+        <div id="resRespostaWrap"></div>
+      </div>
+    </div>
+
+    <!-- Cards de info -->
+    <div class="info-row">
+      <div class="info-card">
+        <i class="bi bi-person-check" style="color:var(--green)"></i>
+        <div>
+          <strong>Tem uma conta?</strong>
+          <span>Acesse <a href="minhas-manifestacoes.html" style="color:var(--green)">Minhas Manifestações</a> para ver todo seu histórico.</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <i class="bi bi-clock-history" style="color:var(--orange)"></i>
+        <div>
+          <strong>Prazo de resposta</strong>
+          <span>Manifestações são respondidas em até 48 horas úteis.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    /* ── Helpers ── */
+    function toast(msg, type, ms) {
+      ms = ms || 3500;
+      var icons = { success:'bi-check-circle-fill', error:'bi-x-circle-fill', warning:'bi-exclamation-triangle-fill' };
+      var $t = $('<div class="dw-t t-'+type+'"><i class="bi '+icons[type]+' ti"></i><span class="tm">'+msg+'</span><i class="bi bi-x tc"></i></div>');
+      $('#toastWrap').append($t);
+      $t.find('.tc').on('click', function(){ $t.remove(); });
+      setTimeout(function(){ $t.fadeOut(300, function(){ $t.remove(); }); }, ms);
+    }
+
+    var statusLabels = {
+      pendente:   ['Pendente',   'sb-pendente'],
+      em_analise: ['Em Análise', 'sb-em_analise'],
+      resolvido:  ['Resolvido',  'sb-resolvido'],
+      arquivado:  ['Arquivado',  'sb-arquivado']
+    };
+    var statusIcons = {
+      pendente:   'bi-hourglass-split',
+      em_analise: 'bi-search',
+      resolvido:  'bi-check-circle-fill',
+      arquivado:  'bi-archive'
+    };
+    var catLabels = {
+      infraestrutura:'Infraestrutura', ensino:'Ensino', convivencia:'Convivência',
+      elogio:'Elogio', sugestao:'Sugestão', denuncia:'Denúncia', outros:'Outros'
+    };
+    var urgLabels = { normal:'Normal', alta:'Alta', urgente:'Urgente' };
+
+    function formatDate(d) {
+      if (!d) return '—';
+      var dt = new Date(d.replace(' ','T'));
+      return dt.toLocaleDateString('pt-BR') + ' às ' + dt.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
+    }
+
+    /* ── Navbar: detecta login ── */
+    (function(){
+      try {
+        var u = JSON.parse(sessionStorage.getItem('dw_user'));
+        if (u && u.nome) {
+          $('#navLoginBtn').html('<i class="bi bi-person-circle me-1"></i>' + $('<span>').text(u.nome).html());
+          $('#navLoginBtn').attr('href','minhas-manifestacoes.html').removeClass('hl').css({background:'rgba(255,255,255,.12)',color:'#fff',border:'1.5px solid rgba(255,255,255,.2)'});
+        }
+      } catch(e) {}
+    })();
+
+    /* ── Busca por protocolo ── */
+    function buscar() {
+      var prot = $('#inpProtocolo').val().trim();
+      if (!prot) { toast('Digite o número do protocolo.', 'warning'); return; }
+
+      var $btn = $('#btnBuscar');
+      $btn.addClass('loading');
+      $('#resultado').hide();
+
+      $.ajax({
+        url: 'api/auth.php', method: 'POST',
+        data: { action: 'consultar_protocolo', protocolo: prot },
+        dataType: 'json',
+        success: function(res) {
+          $btn.removeClass('loading');
+          if (!res || !res.sucesso) {
+            toast(res.mensagem || 'Protocolo não encontrado.', 'error');
+            return;
+          }
+          renderResultado(res.manifestacao);
+        },
+        error: function() {
+          $btn.removeClass('loading');
+          toast('Erro de conexão. Tente novamente.', 'error');
+        }
+      });
+    }
+
+    function renderResultado(m) {
+      var st    = statusLabels[m.status] || ['Desconhecido','sb-pendente'];
+      var icon  = statusIcons[m.status]  || 'bi-question-circle';
+
+      $('#resProt').text(m.protocolo);
+      $('#resCriado').text('Registrado em ' + formatDate(m.criado_em));
+      $('#resStatus').attr('class','status-badge ' + st[1]).html('<i class="bi '+icon+'"></i> ' + st[0]);
+      $('#resCat').text(catLabels[m.categoria] || m.categoria);
+      $('#resUrg').text(urgLabels[m.urgencia]  || m.urgencia);
+      $('#resAss').text(m.assunto);
+
+      if (m.resolvido_em) {
+        $('#resResolvidoRow').show();
+        $('#resResolvido').text(formatDate(m.resolvido_em));
+      } else {
+        $('#resResolvidoRow').hide();
+      }
+
+      if (m.resposta) {
+        $('#resRespostaWrap').html(
+          '<div class="resposta-box">' +
+            '<div class="resp-label"><i class="bi bi-reply-fill me-1"></i>Resposta da Ouvidoria</div>' +
+            '<p>' + $('<span>').text(m.resposta).html().replace(/\n/g,'<br>') + '</p>' +
+          '</div>'
+        );
+      } else {
+        $('#resRespostaWrap').html(
+          '<div class="no-resp-box">' +
+            '<i class="bi bi-hourglass-split" style="color:var(--orange);font-size:1.3rem;display:block;margin-bottom:.4rem"></i>' +
+            '<strong>Aguardando resposta</strong><br>' +
+            '<span>A equipe está analisando sua manifestação. Volte em breve.</span>' +
+          '</div>'
+        );
+      }
+
+      $('#resultado').fadeIn(300);
+      $('html,body').animate({ scrollTop: $('#resultado').offset().top - 120 }, 400);
+    }
+
+    /* ── Eventos ── */
+    $('#btnBuscar').on('click', buscar);
+    $('#inpProtocolo').on('keydown', function(e){ if (e.key === 'Enter') buscar(); });
+
+    // Formata automaticamente o protocolo enquanto digita
+    $('#inpProtocolo').on('input', function(){
+      var v = $(this).val().toUpperCase().replace(/[^A-Z0-9\-#]/g,'');
+      if (v && !v.startsWith('#')) v = '#' + v;
+      $(this).val(v);
+    });
+
+    // Pega protocolo da URL se vier como ?p=...
+    (function(){
+      var params = new URLSearchParams(window.location.search);
+      var p = params.get('p');
+      if (p) {
+        $('#inpProtocolo').val(decodeURIComponent(p).toUpperCase());
+        buscar();
+      }
+    })();
+  </script>
+</body>
+</html>
