@@ -31,6 +31,7 @@ define('DB_NAME', 'ouvidoria_dw');      // ← Altere para o nome do seu banco
 define('DB_USER', 'root');              // ← Altere para seu usuário
 define('DB_PASS', '');                  // ← Altere para sua senha
 define('DB_CHARSET', 'utf8mb4');
+define('DB_PORT', '3307');
 
 /* ══════════════════════════════════════════════════════════
    CONEXÃO PDO
@@ -38,7 +39,13 @@ define('DB_CHARSET', 'utf8mb4');
 function conectar(): PDO {
     static $pdo = null;
     if ($pdo === null) {
-        $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', DB_HOST, DB_NAME, DB_CHARSET);
+        $dsn = sprintf(
+            'mysql:host=%s;port=%s;dbname=%s;charset=%s',
+            DB_HOST,
+            DB_PORT,
+            DB_NAME,
+            DB_CHARSET
+        );
         $pdo = new PDO($dsn, DB_USER, DB_PASS, [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
