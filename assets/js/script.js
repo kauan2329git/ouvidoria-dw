@@ -278,10 +278,10 @@ const DW = (() => {
     $('#formCadastro').on('submit', function(e) {
       e.preventDefault();
       if (!$('#checkTermos').prop('checked')) {
-        setError($('#checkTermos').closest('.field-group'), true);
-        $('<span class="field-error" style="display:block" id="errTermos">Você precisa aceitar os termos.</span>').insertAfter('#checkTermos').parent();
+        setError($('#fgTermos'), true);
         return;
       }
+      setError($('#fgTermos'), false);
 
       const $btn = $('#btnCadastrar');
       btnLoad($btn, true);
@@ -323,6 +323,11 @@ const DW = (() => {
     /* Limpa erros ao digitar */
     $('input, select').on('input change', function() {
       setError($(this).closest('.field-group'), false);
+    });
+
+    /* Limpa erro dos termos ao marcar o checkbox */
+    $('#checkTermos').on('change', function() {
+      setError($('#fgTermos'), !$(this).prop('checked'));
     });
   }
 
