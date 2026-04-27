@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultar Protocolo — Ouvidoria Digital EEEP Dom Walfrido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/manifestacao.css">
+  <style>
+    body { background: var(--bg); }
+
+    /* ══ NAVBAR — mesmo visual da manifestacao.html ══
+       Fonte alterada: Inter 400/500 ao invés de Poppins 500,
+       tamanho 0.82rem (mais compacto), letter-spacing 0.01em.
+       O modelo antigo usava font-size:.82rem sem peso extra,
+       o que deixava os itens mais leves e elegantes.
+    ════════════════════════════════════════════════ */
+    .home-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      background: rgba(7,64,39,.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      transition: all .35s ease;
+    }
+    .home-nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.25); }
+
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 1.5rem; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .nav-logo-wrap { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .nav-logo-img {
+      height: 36px; width: 36px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--orange);
+      transition: transform .3s;
+    }
+    .nav-logo-wrap:hover .nav-logo-img { transform: scale(1.07); }
+
+    /* ── Tipografia da navbar: estilo antigo ──
+       Inter 400, 0.82rem, opacity-based em vez de peso
+    ─────────────────────────────────────────── */
+    .nav-logo-text strong {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-size: .95rem; color: #fff;
+    }
+    .nav-logo-text span {
+      font-size: .62rem; color: var(--orange);
+      letter-spacing: .1em; text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a {
+      /* Fonte do modelo antigo: .82rem, weight 400, padding menor */
+      color: rgba(255,255,255,.75);
+      font-size: .82rem;
+      font-weight: 400;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: all .25s;
+      text-decoration: none;
+      letter-spacing: .01em;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .nav-links a.nav-active { color: #fff; background: rgba(255,255,255,.08); }
+
+    .nav-btn-cta {
+      background: var(--orange) !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+      padding: 6px 16px !important;
+      border-radius: 8px !important;
+    }
+    .nav-btn-cta:hover { background: var(--orange-dark) !important; }
+
+    .nav-hamburger {
+      display: none; background: none; border: none;
+      color: #fff; font-size: 1.4rem; cursor: pointer;
+    }
+    @media(max-width:768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: block; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 64px; left: 0; right: 0;
+        background: var(--green-deeper);
+        padding: 1rem; gap: 2px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        z-index: 899;
+      }
+    }
+
+    /* ══ HERO COMPACTO ══════════════════════════════ */
+    .page-hero {
+      background: linear-gradient(135deg, var(--green-deeper) 0%, var(--green-dark) 100%);
+      padding: 5.5rem 1rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(244,121,32,.2) 0%, transparent 55%),
+        radial-gradient(circle at 80% 30%, rgba(0,133,66,.3) 0%, transparent 50%);
+    }
+    .page-hero-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.06); pointer-events: none;
+    }
+    .page-hero-ring.r1 { width:400px;height:400px; top:-120px;right:-80px; }
+    .page-hero-ring.r2 { width:220px;height:220px; bottom:-60px;left:40px; border-color:rgba(244,121,32,.07); }
+    .page-hero > * { position: relative; z-index: 1; }
+
+    .page-hero-kicker {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(244,121,32,.15);
+      border: 1px solid rgba(244,121,32,.3);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: .75rem; font-weight: 600; color: var(--orange);
+      margin-bottom: 1rem;
+    }
+    .page-hero h1 {
+      font-family: 'Syne', sans-serif; color: #fff;
+      font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800;
+      margin-bottom: .4rem;
+    }
+    .page-hero p { color: rgba(255,255,255,.72); font-size: .92rem; margin: 0; }
+
+    /* ══ SEARCH CARD ════════════════════════════════ */
+    .search-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 2rem;
+      max-width: 600px;
+      margin: -2rem auto 0;
+      position: relative; z-index: 2;
+    }
+    .search-card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      margin-bottom: 1rem; color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .search-card-title i { color: var(--orange); }
+
+    .prot-input-group {
+      display: flex; gap: 8px;
+    }
+    .prot-input-group input {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 11px 16px;
+      font-size: .92rem;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--text);
+    }
+    .prot-input-group input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px var(--green-soft);
+    }
+    .prot-input-group input::placeholder {
+      text-transform: none; letter-spacing: 0;
+      color: #aab8c5;
+    }
+    .prot-input-group .btn-buscar {
+      display: flex; align-items: center; gap: 7px;
+      padding: 11px 22px;
+      background: var(--green); color: #fff;
+      border: none; border-radius: var(--radius);
+      font-family: 'Poppins', sans-serif;
+      font-size: .88rem; font-weight: 600;
+      cursor: pointer; transition: var(--transition);
+      white-space: nowrap;
+      position: relative; overflow: hidden;
+    }
+    .prot-input-group .btn-buscar:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .prot-input-group .btn-buscar:active { transform: scale(.97); }
+    .prot-input-group .btn-buscar.loading .btn-text { opacity: 0; }
+    .prot-input-group .btn-buscar.loading .btn-spinner { display: block; }
+    .btn-spinner {
+      display: none; position: absolute;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .6s linear infinite;
+      left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+    }
+    @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+    .search-hint {
+      margin-top: .6rem; margin-bottom: 0;
+      font-size: .74rem; color: var(--text-muted);
+    }
+
+    /* ══ RESULTADO ══════════════════════════════════ */
+    .result-wrap {
+      max-width: 600px; margin: 1.5rem auto 0;
+      display: none;
+    }
+
+    .result-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      animation: slideUp .35s ease;
+    }
+    @keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+    .result-card-head {
+      padding: 1.2rem 1.4rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: .5rem;
+    }
+    .result-prot {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem; font-weight: 800; color: var(--text);
+    }
+    .result-date { font-size: .76rem; color: var(--text-muted); margin-top: 2px; }
+
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: .78rem; font-weight: 600;
+    }
+    .sb-pendente   { background: #fff3e0; color: #e65100; }
+    .sb-em_analise { background: #e3f2fd; color: #1565c0; }
+    .sb-resolvido  { background: #e8f5e9; color: var(--green-dark); }
+    .sb-arquivado  { background: #f5f5f5; color: #616161; }
+
+    .result-card-body { padding: 1.2rem 1.4rem; }
+
+    .detail-grid {
+      background: var(--bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .detail-row {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 1rem;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: .78rem; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+    .detail-value { font-size: .85rem; color: var(--text); font-weight: 500; text-align: right; word-break: break-word; }
+
+    .resposta-box {
+      background: var(--green-soft);
+      border: 1.5px solid rgba(0,133,66,.2);
+      border-radius: var(--radius); padding: 1rem 1.2rem;
+      margin-top: .5rem;
+    }
+    .resposta-box .resp-label {
+      font-size: .72rem; font-weight: 700; color: var(--green-dark);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: .5rem;
+    }
+    .resposta-box p { font-size: .85rem; color: var(--text); margin: 0; line-height: 1.65; }
+
+    .waiting-box {
+      background: #fffbf5;
+      border: 1.5px dashed rgba(244,121,32,.3);
+      border-radius: var(--radius); padding: 1.2rem;
+      text-align: center;
+    }
+    .waiting-box i { font-size: 1.4rem; color: var(--orange); display: block; margin-bottom: .4rem; }
+    .waiting-box strong { font-size: .88rem; display: block; margin-bottom: .2rem; }
+    .waiting-box span { font-size: .8rem; color: var(--text-muted); }
+
+    /* ══ INFO CARDS ═════════════════════════════════ */
+    .info-section {
+      max-width: 600px; margin: 2rem auto 4rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .info-card {
+      background: #fff; border-radius: var(--radius);
+      padding: 1rem 1.1rem; border: 1.5px solid var(--border);
+      display: flex; gap: 10px; align-items: flex-start;
+      transition: var(--transition);
+    }
+    .info-card:hover { border-color: var(--green); }
+    .info-card i { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .info-card strong { display: block; font-size: .82rem; margin-bottom: 2px; }
+    .info-card span { font-size: .76rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ══ TOAST ══════════════════════════════════════ */
+    .toast-wrap { position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;flex-direction:column;gap:8px; }
+    .dw-t { display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:13px 16px;box-shadow:0 8px 28px rgba(0,0,0,.13);border-left:4px solid var(--green);min-width:260px;max-width:340px;animation:tIn .3s ease; }
+    .dw-t.t-error  { border-color:#e53e3e; }
+    .dw-t.t-warning{ border-color:var(--orange); }
+    .dw-t .ti { font-size:1rem;color:var(--green);flex-shrink:0; }
+    .dw-t.t-error .ti  { color:#e53e3e; }
+    .dw-t.t-warning .ti{ color:var(--orange); }
+    .dw-t .tm { font-size:.85rem;font-weight:500;flex:1; }
+    .dw-t .tc { cursor:pointer;color:#94a3b8;font-size:.9rem; }
+    @keyframes tIn { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:translateX(0)} }
+
+    @media(max-width:480px) {
+      .info-section { grid-template-columns:1fr; }
+      .prot-input-group { flex-direction:column; }
+      .prot-input-group .btn-buscar { width:100%; justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ════════════════════════════════════════ -->
+  <nav class="home-nav" id="homeNav">
+    <div class="nav-inner">
+      <a href="manifestacao.html" class="nav-logo-wrap">
+        <img src="assets/img/logo2 (2).jpeg" alt="Logo EEEP Dom Walfrido" class="nav-logo-img">
+        <div class="nav-logo-text">
+          <strong>Ouvidoria Digital</strong>
+          <span>EEEP Dom Walfrido</span>
+        </div>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="manifestacao.html">Início</a>
+        <a href="manifestacao.html#registrar">Nova Manifestação</a>
+        <a href="consulta.html" class="nav-active">Consultar Protocolo</a>
+        <a href="login.html" class="nav-btn-cta" id="navLoginBtn">
+          <i class="bi bi-person-circle me-1"></i>Minha Conta
+        </a>
+      </div>
+      <button class="nav-hamburger" id="navHamburger"><i class="bi bi-list"></i></button>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="page-hero-ring r1"></div>
+    <div class="page-hero-ring r2"></div>
+    <div class="page-hero-kicker animate-fade-up" data-delay="1">
+      <i class="bi bi-search"></i> Acompanhe sua manifestação
+    </div>
+    <h1 class="animate-fade-up" data-delay="2">Consultar Protocolo</h1>
+    <p class="animate-fade-up" data-delay="3">Digite o número do protocolo recebido ao enviar sua manifestação.</p>
+  </section>
+
+  <!-- ══ CONTEÚDO ═══════════════════════════════════════ -->
+  <div class="container" style="padding-bottom:3rem">
+
+    <!-- Card de busca -->
+    <div class="search-card animate-fade-up" data-delay="2">
+      <div class="search-card-title">
+        <i class="bi bi-hash"></i> Número do Protocolo
+      </div>
+      <div class="prot-input-group">
+        <input type="text" id="inpProtocolo" placeholder="Ex: #DW-2026-1234" maxlength="18">
+        <button class="btn-buscar" id="btnBuscar">
+          <span class="btn-text"><i class="bi bi-search"></i> Buscar</span>
+          <span class="btn-spinner"></span>
+        </button>
+      </div>
+      <p class="search-hint">
+        <i class="bi bi-info-circle me-1"></i>
+        O protocolo apareceu na tela de confirmação após registrar sua manifestação.
+      </p>
+    </div>
+
+    <!-- Resultado -->
+    <div class="result-wrap" id="resultado">
+      <div class="result-card">
+        <div class="result-card-head">
+          <div>
+            <div class="result-prot" id="resProt"></div>
+            <div class="result-date" id="resCriado"></div>
+          </div>
+          <span class="status-badge" id="resStatus"></span>
+        </div>
+        <div class="result-card-body">
+          <div class="detail-grid">
+            <div class="detail-row">
+              <span class="detail-label"><i class="bi bi-tag me-1"></i>Categoria</span>
+              <span class="detail-value" id="resCat"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label"><i class="bi bi-flag me-1"></i>Urgência</span>
+              <span class="detail-value" id="resUrg"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label"><i class="bi bi-chat-text me-1"></i>Assunto</span>
+              <span class="detail-value" id="resAss"></span>
+            </div>
+            <div class="detail-row" id="resResolvidoRow" style="display:none">
+              <span class="detail-label"><i class="bi bi-check-circle me-1"></i>Resolvido em</span>
+              <span class="detail-value" id="resResolvido"></span>
+            </div>
+          </div>
+          <div id="resRespostaWrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info cards -->
+    <div class="info-section animate-slide-up" data-delay="3">
+      <div class="info-card">
+        <i class="bi bi-person-check" style="color:var(--green)"></i>
+        <div>
+          <strong>Tem uma conta?</strong>
+          <span>Acesse <a href="minhas-manifestacoes.html" style="color:var(--green)">Minhas Manifestações</a> para ver todo seu histórico em um só lugar.</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <i class="bi bi-clock-history" style="color:var(--orange)"></i>
+        <div>
+          <strong>Prazo de resposta</strong>
+          <span>Manifestações são analisadas e respondidas em até 48 horas úteis.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    /* ── Scroll navbar ── */
+    $(window).on('scroll', function(){
+      $('#homeNav').toggleClass('scrolled', $(window).scrollTop() > 10);
+    });
+
+    /* ── Hamburger ── */
+    $('#navHamburger').on('click', function(){
+      $('#navLinks').toggleClass('open');
+      $(this).find('i').toggleClass('bi-list bi-x');
+    });
+
+    /* ── Detecta login para alterar botão ── */
+    (function(){
+      try {
+        var u = JSON.parse(sessionStorage.getItem('dw_user'));
+        if (u && u.nome) {
+          $('#navLoginBtn')
+            .html('<i class="bi bi-person-circle me-1"></i>' + $('<span>').text(u.nome.split(' ')[0]).html())
+            .attr('href','minhas-manifestacoes.html')
+            .removeClass('nav-btn-cta')
+            .css({ background:'rgba(255,255,255,.1)', color:'#fff', border:'1.5px solid rgba(255,255,255,.2)' });
+        }
+      } catch(e){}
+    })();
+
+    /* ── Toast ── */
+    function toast(msg, type, ms) {
+      ms = ms || 3500;
+      var icons = { success:'bi-check-circle-fill', error:'bi-x-circle-fill', warning:'bi-exclamation-triangle-fill' };
+      var $t = $('<div class="dw-t t-'+type+'"><i class="bi '+(icons[type]||icons.success)+' ti"></i><span class="tm">'+msg+'</span><i class="bi bi-x tc"></i></div>');
+      $('#toastWrap').append($t);
+      $t.find('.tc').on('click', function(){ $t.remove(); });
+      setTimeout(function(){ $t.fadeOut(300, function(){ $t.remove(); }); }, ms);
+    }
+
+    /* ── Dados estáticos ── */
+    var statusLabels = {
+      pendente:   ['Pendente',   'sb-pendente',   'bi-hourglass-split'],
+      em_analise: ['Em Análise', 'sb-em_analise', 'bi-search'],
+      resolvido:  ['Resolvido',  'sb-resolvido',  'bi-check-circle-fill'],
+      arquivado:  ['Arquivado',  'sb-arquivado',  'bi-archive']
+    };
+    var catLabels = { infraestrutura:'Infraestrutura', ensino:'Ensino', convivencia:'Convivência', elogio:'Elogio', sugestao:'Sugestão', denuncia:'Denúncia', outros:'Outros' };
+    var urgLabels = { normal:'Normal', alta:'Alta', urgente:'Urgente' };
+
+    function formatDate(d) {
+      if (!d) return '—';
+      var dt = new Date(d.replace(' ','T'));
+      return dt.toLocaleDateString('pt-BR') + ' às ' + dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    }
+
+    /* ── Busca ── */
+    function buscar() {
+      var prot = $('#inpProtocolo').val().trim();
+      if (!prot) { toast('Digite o número do protocolo.', 'warning'); return; }
+      var $btn = $('#btnBuscar');
+      $btn.addClass('loading');
+      $('#resultado').hide();
+
+      $.ajax({
+        url: 'api/auth.php', method: 'POST',
+        data: { action: 'consultar_protocolo', protocolo: prot },
+        dataType: 'json',
+        success: function(res) {
+          $btn.removeClass('loading');
+          if (!res || !res.sucesso) { toast(res.mensagem || 'Protocolo não encontrado.', 'error'); return; }
+          renderResultado(res.manifestacao);
+        },
+        error: function() {
+          $btn.removeClass('loading');
+          toast('Erro de conexão. Tente novamente.', 'error');
+        }
+      });
+    }
+
+    function renderResultado(m) {
+      var st   = statusLabels[m.status] || ['Desconhecido','sb-pendente','bi-question-circle'];
+      $('#resProt').text(m.protocolo);
+      $('#resCriado').text('Registrado em ' + formatDate(m.criado_em));
+      $('#resStatus').attr('class','status-badge '+st[1]).html('<i class="bi '+st[2]+' me-1"></i>'+st[0]);
+      $('#resCat').text(catLabels[m.categoria] || m.categoria);
+      $('#resUrg').text(urgLabels[m.urgencia] || m.urgencia);
+      $('#resAss').text(m.assunto);
+
+      if (m.resolvido_em) {
+        $('#resResolvidoRow').show();
+        $('#resResolvido').text(formatDate(m.resolvido_em));
+      } else {
+        $('#resResolvidoRow').hide();
+      }
+
+      if (m.resposta) {
+        $('#resRespostaWrap').html(
+          '<div class="resposta-box">' +
+            '<div class="resp-label"><i class="bi bi-reply-fill me-1"></i>Resposta da Ouvidoria</div>' +
+            '<p>' + $('<span>').text(m.resposta).html().replace(/\n/g,'<br>') + '</p>' +
+          '</div>'
+        );
+      } else {
+        $('#resRespostaWrap').html(
+          '<div class="waiting-box">' +
+            '<i class="bi bi-hourglass-split"></i>' +
+            '<strong>Aguardando resposta</strong>' +
+            '<span>A equipe está analisando sua manifestação. Volte em breve.</span>' +
+          '</div>'
+        );
+      }
+
+      $('#resultado').fadeIn(300);
+      $('html,body').animate({ scrollTop: $('#resultado').offset().top - 100 }, 400);
+    }
+
+    /* ── Eventos ── */
+    $('#btnBuscar').on('click', buscar);
+    $('#inpProtocolo').on('keydown', function(e){ if (e.key === 'Enter') buscar(); });
+
+    $('#inpProtocolo').on('input', function(){
+      var v = $(this).val().toUpperCase().replace(/[^A-Z0-9\-#]/g,'');
+      if (v && !v.startsWith('#')) v = '#' + v;
+      $(this).val(v);
+    });
+
+    /* ── Auto-busca por URL ?p=... ── */
+    (function(){
+      var p = new URLSearchParams(window.location.search).get('p');
+      if (p) { $('#inpProtocolo').val(decodeURIComponent(p).toUpperCase()); buscar(); }
+    })();
+
+    /* ── Animações ao scroll ── */
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ e.target.style.animationPlayState='running'; obs.unobserve(e.target); } });
+      }, {threshold:.1});
+      document.querySelectorAll('.animate-fade-up,.animate-slide-up').forEach(function(el){
+        el.style.animationPlayState='paused'; obs.observe(el);
+      });
+    }
+  </script>
+</body>
+</html>

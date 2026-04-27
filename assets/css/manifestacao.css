@@ -1,7 +1,7 @@
 /* ── NAVBAR ────────────────────────────────────── */
     .home-nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
-      background: rgba(7,64,39,.96);
+      background: var(--green-deeper);
+      position: sticky; top: 0; left: 0; right: 0; z-index: 900;
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255,255,255,.07);
       transition: all .35s ease;
