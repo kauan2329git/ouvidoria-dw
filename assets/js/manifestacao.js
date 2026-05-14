@@ -107,17 +107,17 @@ $(function () {
   });
 
   /* ── Limpar form ──────────────────────────────────── */
-  $('#btnLimpar').on('click', function(){
-    $('#catGrid .cat-option').removeClass('selected');
-    $('#catVal').val('');
-    $('#selUrg').val('');
-    $('#selSig').val('nao');
-    $('#inpAss').val('');
-    $('#inpDesc').val('');
-    $('#inpFile').val('');
-    $('#fileName').text('').hide();
-    $('#fg-cat, #fg-urg, #fg-ass, #fg-desc').removeClass('has-error');
-    $('#err-cat, #err-urg, #err-ass, #err-desc').hide();
+  $('#panelLogin').on('click','#btnLimparL',function(){
+  $('#catGridL .cat-option').removeClass('selected');
+  $('#catValL').val('');
+  $('#selUrgL').val('');
+  $('#selSigL').val('nao');
+  $('#inpAssL').val('');
+  $('#inpDescL').val('');
+  $('#inpFileL').val('');
+  $('#fileNameL').text('').hide();
+  $('#fg-catL,#fg-urgL,#fg-assL,#fg-descL').removeClass('has-error');
+  $('#err-catL,#err-urgL,#err-assL,#err-descL').hide();
   });
 
   /* ── Limpar erros ao digitar ──────────────────────── */
@@ -279,8 +279,10 @@ $(function () {
             '</div>' +
           '</div>' +
 
-          '<div style="display:flex;justify-content:flex-end;margin-top:.5rem">' +
-            '<button type="button" class="btn-dw btn-dw-orange" id="btnEnviarL">' +
+          '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:.5rem">'+
+            '<button type="button" class="btn-dw btn-dw-ghost" id="btnLimparL">'+
+              '<i class="bi bi-arrow-counterclockwise me-2"></i>Limpar</button>'+
+            '<button type="button" class="btn-dw btn-dw-orange" id="btnEnviarL">'+
               '<span class="btn-text"><i class="bi bi-send me-2"></i>Enviar Manifestação</span>' +
               '<span class="btn-spinner"></span>' +
             '</button>' +
