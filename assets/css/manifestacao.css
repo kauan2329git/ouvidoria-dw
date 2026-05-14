@@ -35,6 +35,17 @@
       margin-left: 6px;
     }
     .nav-btn-login:hover { background: rgba(244,121,32,.1) !important; border-color: var(--orange) !important; }
+
+    /* Estado logado — troque as cores aqui para personalizar */
+    .nav-btn-login.logado {
+      background: var(--orange) !important;
+      color: #fff !important;
+      border: 1.5px solid var(--orange) !important;
+    }
+    .nav-btn-login.logado:hover {
+      background: #c94e0d !important;
+      border-color: #c94e0d !important;
+    }
     .nav-hamburger { display: none; background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; }
 
     /* Mobile nav drawer */
