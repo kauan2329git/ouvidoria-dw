@@ -74,7 +74,7 @@ $(function () {
   var $btn = $('#navLoginBtn');
   $btn.html('<i class="bi bi-person-circle"></i> ' + esc((usuario.nome || '').split(' ')[0]))
       .attr('href', '#')
-      .css({ background: 'rgba(255,255,255,.12)', color: '#fff', border: '1.5px solid rgba(255,255,255,.2)' });
+      .addClass('logado');
 
   // BUG-10: botão de logout injetado aqui — não existia no HTML original
   $btn.after(

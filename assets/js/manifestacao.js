@@ -36,7 +36,7 @@ $(function () {
     $('#navLoginBtn')
       .html('<i class="bi bi-person-circle me-1"></i>' + esc(usuario.nome.split(' ')[0]))
       .attr('href', '#registrar')
-      .css({ background:'rgba(255,255,255,.12)', color:'#fff', border:'1.5px solid rgba(255,255,255,.2)' });
+      .addClass('logado');
 
     if (!$('#navLogoutBtn').length) {
       $('#navLoginBtn').after(

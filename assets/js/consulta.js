@@ -49,7 +49,7 @@ $(function(){
         $('#navLoginBtn')
           .html('<i class="bi bi-person-circle me-1"></i>' + $('<span>').text(u.nome.split(' ')[0]).html())
           .attr('href','minhas-manifestacoes.html')
-          .css({background:'rgba(255,255,255,.12)',color:'#fff',border:'1.5px solid rgba(255,255,255,.2)'});
+          .addClass('logado');
 
         $('#navLoginBtn').after(
           '<a id="navLogoutBtn" href="#" '+
