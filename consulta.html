@@ -1,254 +1,134 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consultar Protocolo — Ouvidoria Digital EEEP Dom Walfrido</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/consulta.css">
-  <link rel="stylesheet" href="assets/css/manifestacao.css">
-</head>
-<body>
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Protocolo — Ouvidoria Digital EEEP Dom Walfrido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/consulta.css">
+    <link rel="stylesheet" href="assets/css/manifestacao.css">
+  </head>
+  <body>
 
-  <!-- Navbar -->
-  <nav class="top-bar" id="homeNav">
-    <div class="nav-inner">
-      <a href="manifestacao.html" class="nav-logo-wrap">
-        <img src="assets/img/logo2 (2).jpeg" alt="Logo EEEP Dom Walfrido" class="nav-logo-img">
-        <div class="nav-logo-text">
-          <strong>Ouvidoria Digital</strong>
-          <span>EEEP Dom Walfrido</span>
+    <!-- BUG-02 CORRIGIDO: era class="top-bar" (não existia no CSS) → class="home-nav" -->
+    <nav class="home-nav" id="homeNav">
+      <div class="nav-inner">
+        <a href="manifestacao.html" class="nav-logo-wrap">
+          <img src="assets/img/logo2 (2).jpeg" alt="Logo EEEP Dom Walfrido" class="nav-logo-img">
+          <div class="nav-logo-text">
+            <strong>Ouvidoria Digital</strong>
+            <span>EEEP Dom Walfrido</span>
+          </div>
+        </a>
+        <div class="nav-links" id="navLinks">
+          <!-- BUG-03 CORRIGIDO: era href="consulta.html  " (dois espaços) -->
+          <a href="consulta.html" class="active">Consultar Protocolo</a>
+          <a href="minhas-manifestacoes.html">Minhas Manifestações</a>
+          <!-- BUG-06 CORRIGIDO: âncoras apontam para homepage, não IDs inexistentes aqui -->
+          <a href="manifestacao.html#como-funciona">Como Funciona</a>
+          <a href="manifestacao.html#registrar">Registrar</a>
+          <a href="manifestacao.html#lgpd">Privacidade</a>
+          <!-- BUG-09 CORRIGIDO: id="navLoginBtn" para o JS detectar e atualizar -->
+          <a id="navLoginBtn" href="login.html" class="nav-btn-login">
+            <i class="bi bi-person-circle me-1"></i>Área do Gestor
+          </a>
         </div>
-      </a>
-      <div class="nav-links" id="navLinks">
-        <a href="consulta.html  ">Consulta</a>
-        <a href="minhas-manifestacoes.html">Minhas Manifestações</a>
-        <a href="manifestacao.html#como-funciona">Como Funciona</a>
-        <a href="#registrar">Registrar</a>
-        <a href="#lgpd">Privacidade</a>
-        <a href="login.html" class="nav-btn-login"><i class="bi bi-person-circle me-1"></i>Área do Gestor</a>
-      </div>
-      <button class="nav-hamburger" id="navHamburger"><i class="bi bi-list"></i></button>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <div class="consulta-hero">
-    <h1><i class="bi bi-search me-2"></i>Consultar Protocolo</h1>
-    <p>Digite o número do protocolo recebido ao enviar sua manifestação.</p>
-  </div>
-
-  <!-- Busca -->
-  <div class="container">
-    <div class="search-card">
-      <h5><i class="bi bi-hash me-1" style="color:var(--orange)"></i>Número do Protocolo</h5>
-      <div class="prot-input-wrap">
-        <input type="text" id="inpProtocolo" placeholder="Ex: #DW-2026-1234" maxlength="18">
-        <button class="btn-dw btn-dw-primary" id="btnBuscar" style="white-space:nowrap;min-width:110px">
-          <span class="btn-text"><i class="bi bi-search me-1"></i>Buscar</span>
-          <span class="btn-spinner"></span>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+          <i class="bi bi-list"></i>
         </button>
       </div>
-      <p style="font-size:.74rem;color:var(--text-muted);margin-top:.5rem;margin-bottom:0">
-        <i class="bi bi-info-circle me-1"></i>O protocolo foi enviado na tela de confirmação após registrar sua manifestação.
-      </p>
+    </nav>
 
-      <!-- Resultado -->
-      <div id="resultado">
-        <hr style="margin:1.2rem 0">
+    <!-- Hero -->
+    <div class="consulta-hero">
+      <h1><i class="bi bi-search me-2"></i>Consultar Protocolo</h1>
+      <p>Digite o número do protocolo recebido ao enviar sua manifestação.</p>
+    </div>
 
-        <!-- Cabeçalho do resultado -->
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
+    <!-- Busca -->
+    <div class="container">
+      <div class="search-card">
+        <h5><i class="bi bi-hash me-1" style="color:var(--orange)"></i>Número do Protocolo</h5>
+        <div class="prot-input-wrap">
+          <input type="text" id="inpProtocolo" placeholder="Ex: #DW-2026-1234" maxlength="18">
+          <button class="btn-dw btn-dw-primary" id="btnBuscar" style="white-space:nowrap;min-width:110px">
+            <span class="btn-text"><i class="bi bi-search me-1"></i>Buscar</span>
+            <span class="btn-spinner"></span>
+          </button>
+        </div>
+        <p style="font-size:.74rem;color:var(--text-muted);margin-top:.5rem;margin-bottom:0">
+          <i class="bi bi-info-circle me-1"></i>O protocolo foi enviado na tela de confirmação após registrar sua manifestação.
+        </p>
+
+        <!-- BUG-14 CORRIGIDO: loader visível durante a busca (antes não havia indicador) -->
+        <div id="buscandoLoader" style="display:none;text-align:center;padding:2rem 0">
+          <div style="display:inline-flex;align-items:center;gap:.6rem;color:var(--text-muted);font-size:.88rem">
+            <i class="bi bi-arrow-clockwise" style="animation:spin .7s linear infinite;font-size:1.1rem;color:var(--orange)"></i>
+            Buscando manifestação...
+          </div>
+        </div>
+
+        <!-- Resultado -->
+        <div id="resultado" style="display:none">
+          <hr style="margin:1.2rem 0">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem" id="resProt"></div>
+              <div style="font-size:.75rem;color:var(--text-muted)" id="resCriado"></div>
+            </div>
+            <span class="status-badge" id="resStatus"></span>
+          </div>
+
+          <div style="background:var(--bg);border-radius:12px;padding:.8rem 1rem;margin-bottom:.8rem">
+            <div class="mf-detail-row">
+              <span class="mf-detail-label"><i class="bi bi-tag me-1"></i>Categoria</span>
+              <span class="mf-detail-value" id="resCat"></span>
+            </div>
+            <div class="mf-detail-row">
+              <span class="mf-detail-label"><i class="bi bi-flag me-1"></i>Urgência</span>
+              <span class="mf-detail-value" id="resUrg"></span>
+            </div>
+            <div class="mf-detail-row">
+              <span class="mf-detail-label"><i class="bi bi-chat-text me-1"></i>Assunto</span>
+              <span class="mf-detail-value" id="resAss"></span>
+            </div>
+            <div class="mf-detail-row" id="resResolvidoRow" style="display:none">
+              <span class="mf-detail-label"><i class="bi bi-check-circle me-1"></i>Resolvido em</span>
+              <span class="mf-detail-value" id="resResolvido"></span>
+            </div>
+          </div>
+
+          <div id="resRespostaWrap"></div>
+        </div>
+      </div>
+
+      <!-- Cards de info -->
+      <div class="info-row">
+        <div class="info-card">
+          <i class="bi bi-person-check" style="color:var(--green)"></i>
           <div>
-            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem" id="resProt"></div>
-            <div style="font-size:.75rem;color:var(--text-muted)" id="resCriado"></div>
-          </div>
-          <span class="status-badge" id="resStatus"></span>
-        </div>
-
-        <!-- Detalhes -->
-        <div style="background:var(--bg);border-radius:12px;padding:.8rem 1rem;margin-bottom:.8rem">
-          <div class="mf-detail-row">
-            <span class="mf-detail-label"><i class="bi bi-tag me-1"></i>Categoria</span>
-            <span class="mf-detail-value" id="resCat"></span>
-          </div>
-          <div class="mf-detail-row">
-            <span class="mf-detail-label"><i class="bi bi-flag me-1"></i>Urgência</span>
-            <span class="mf-detail-value" id="resUrg"></span>
-          </div>
-          <div class="mf-detail-row">
-            <span class="mf-detail-label"><i class="bi bi-chat-text me-1"></i>Assunto</span>
-            <span class="mf-detail-value" id="resAss"></span>
-          </div>
-          <div class="mf-detail-row" id="resResolvidoRow" style="display:none">
-            <span class="mf-detail-label"><i class="bi bi-check-circle me-1"></i>Resolvido em</span>
-            <span class="mf-detail-value" id="resResolvido"></span>
+            <strong>Tem uma conta?</strong>
+            <span>Acesse <a href="minhas-manifestacoes.html" style="color:var(--green)">Minhas Manifestações</a> para ver todo seu histórico.</span>
           </div>
         </div>
-
-        <!-- Resposta da ouvidoria -->
-        <div id="resRespostaWrap"></div>
-      </div>
-    </div>
-
-    <!-- Cards de info -->
-    <div class="info-row">
-      <div class="info-card">
-        <i class="bi bi-person-check" style="color:var(--green)"></i>
-        <div>
-          <strong>Tem uma conta?</strong>
-          <span>Acesse <a href="minhas-manifestacoes.html" style="color:var(--green)">Minhas Manifestações</a> para ver todo seu histórico.</span>
-        </div>
-      </div>
-      <div class="info-card">
-        <i class="bi bi-clock-history" style="color:var(--orange)"></i>
-        <div>
-          <strong>Prazo de resposta</strong>
-          <span>Manifestações são respondidas em até 48 horas úteis.</span>
+        <div class="info-card">
+          <i class="bi bi-clock-history" style="color:var(--orange)"></i>
+          <div>
+            <strong>Prazo de resposta</strong>
+            <span>Manifestações são respondidas em até 48 horas úteis.</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="toast-wrap" id="toastWrap"></div>
+    <div class="toast-wrap" id="toastWrap"></div>
 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script>
-    /* ── Helpers ── */
-    function toast(msg, type, ms) {
-      ms = ms || 3500;
-      var icons = { success:'bi-check-circle-fill', error:'bi-x-circle-fill', warning:'bi-exclamation-triangle-fill' };
-      var $t = $('<div class="dw-t t-'+type+'"><i class="bi '+icons[type]+' ti"></i><span class="tm">'+msg+'</span><i class="bi bi-x tc"></i></div>');
-      $('#toastWrap').append($t);
-      $t.find('.tc').on('click', function(){ $t.remove(); });
-      setTimeout(function(){ $t.fadeOut(300, function(){ $t.remove(); }); }, ms);
-    }
-
-    var statusLabels = {
-      pendente:   ['Pendente',   'sb-pendente'],
-      em_analise: ['Em Análise', 'sb-em_analise'],
-      resolvido:  ['Resolvido',  'sb-resolvido'],
-      arquivado:  ['Arquivado',  'sb-arquivado']
-    };
-    var statusIcons = {
-      pendente:   'bi-hourglass-split',
-      em_analise: 'bi-search',
-      resolvido:  'bi-check-circle-fill',
-      arquivado:  'bi-archive'
-    };
-    var catLabels = {
-      infraestrutura:'Infraestrutura', ensino:'Ensino', convivencia:'Convivência',
-      elogio:'Elogio', sugestao:'Sugestão', denuncia:'Denúncia', outros:'Outros'
-    };
-    var urgLabels = { normal:'Normal', alta:'Alta', urgente:'Urgente' };
-
-    function formatDate(d) {
-      if (!d) return '—';
-      var dt = new Date(d.replace(' ','T'));
-      return dt.toLocaleDateString('pt-BR') + ' às ' + dt.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
-    }
-
-    /* ── Navbar: detecta login ── */
-    (function(){
-      try {
-        var u = JSON.parse(sessionStorage.getItem('dw_user'));
-        if (u && u.nome) {
-          $('#navLoginBtn').html('<i class="bi bi-person-circle me-1"></i>' + $('<span>').text(u.nome).html());
-          $('#navLoginBtn').attr('href','minhas-manifestacoes.html').removeClass('hl').css({background:'rgba(255,255,255,.12)',color:'#fff',border:'1.5px solid rgba(255,255,255,.2)'});
-        }
-      } catch(e) {}
-    })();
-
-    /* ── Busca por protocolo ── */
-    function buscar() {
-      var prot = $('#inpProtocolo').val().trim();
-      if (!prot) { toast('Digite o número do protocolo.', 'warning'); return; }
-
-      var $btn = $('#btnBuscar');
-      $btn.addClass('loading');
-      $('#resultado').hide();
-
-      $.ajax({
-        url: 'api/auth.php', method: 'POST',
-        data: { action: 'consultar_protocolo', protocolo: prot },
-        dataType: 'json',
-        success: function(res) {
-          $btn.removeClass('loading');
-          if (!res || !res.sucesso) {
-            toast(res.mensagem || 'Protocolo não encontrado.', 'error');
-            return;
-          }
-          renderResultado(res.manifestacao);
-        },
-        error: function() {
-          $btn.removeClass('loading');
-          toast('Erro de conexão. Tente novamente.', 'error');
-        }
-      });
-    }
-
-    function renderResultado(m) {
-      var st    = statusLabels[m.status] || ['Desconhecido','sb-pendente'];
-      var icon  = statusIcons[m.status]  || 'bi-question-circle';
-
-      $('#resProt').text(m.protocolo);
-      $('#resCriado').text('Registrado em ' + formatDate(m.criado_em));
-      $('#resStatus').attr('class','status-badge ' + st[1]).html('<i class="bi '+icon+'"></i> ' + st[0]);
-      $('#resCat').text(catLabels[m.categoria] || m.categoria);
-      $('#resUrg').text(urgLabels[m.urgencia]  || m.urgencia);
-      $('#resAss').text(m.assunto);
-
-      if (m.resolvido_em) {
-        $('#resResolvidoRow').show();
-        $('#resResolvido').text(formatDate(m.resolvido_em));
-      } else {
-        $('#resResolvidoRow').hide();
-      }
-
-      if (m.resposta) {
-        $('#resRespostaWrap').html(
-          '<div class="resposta-box">' +
-            '<div class="resp-label"><i class="bi bi-reply-fill me-1"></i>Resposta da Ouvidoria</div>' +
-            '<p>' + $('<span>').text(m.resposta).html().replace(/\n/g,'<br>') + '</p>' +
-          '</div>'
-        );
-      } else {
-        $('#resRespostaWrap').html(
-          '<div class="no-resp-box">' +
-            '<i class="bi bi-hourglass-split" style="color:var(--orange);font-size:1.3rem;display:block;margin-bottom:.4rem"></i>' +
-            '<strong>Aguardando resposta</strong><br>' +
-            '<span>A equipe está analisando sua manifestação. Volte em breve.</span>' +
-          '</div>'
-        );
-      }
-
-      $('#resultado').fadeIn(300);
-      $('html,body').animate({ scrollTop: $('#resultado').offset().top - 120 }, 400);
-    }
-
-    /* ── Eventos ── */
-    $('#btnBuscar').on('click', buscar);
-    $('#inpProtocolo').on('keydown', function(e){ if (e.key === 'Enter') buscar(); });
-
-    // Formata automaticamente o protocolo enquanto digita
-    $('#inpProtocolo').on('input', function(){
-      var v = $(this).val().toUpperCase().replace(/[^A-Z0-9\-#]/g,'');
-      if (v && !v.startsWith('#')) v = '#' + v;
-      $(this).val(v);
-    });
-
-    // Pega protocolo da URL se vier como ?p=...
-    (function(){
-      var params = new URLSearchParams(window.location.search);
-      var p = params.get('p');
-      if (p) {
-        $('#inpProtocolo').val(decodeURIComponent(p).toUpperCase());
-        buscar();
-      }
-    })();
-  </script>
-</body>
-</html>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/consulta.js"></script>
+    
+  </body>
+  </html>
