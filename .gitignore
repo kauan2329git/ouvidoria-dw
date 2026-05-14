@@ -1,0 +1,20 @@
+# [BUG-16] Nunca versionar credenciais ou dados sensíveis
+config.php
+.env
+
+# Uploads de usuários
+uploads/
+
+# Logs de aplicação
+logs/
+
+# Dependências
+node_modules/
+vendor/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
