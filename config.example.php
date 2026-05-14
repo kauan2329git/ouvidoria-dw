@@ -13,7 +13,7 @@
 
 // ── Banco de dados ─────────────────────────────────────────────────
 define('DB_HOST',    'localhost');
-define('DB_PORT',    '3307');
+define('DB_PORT',    '3306');
 define('DB_NAME',    'ouvidoria_dw');
 define('DB_USER',    'seu_usuario');
 define('DB_PASS',    'sua_senha_aqui');
